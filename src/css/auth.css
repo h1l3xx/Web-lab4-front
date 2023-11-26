@@ -1,0 +1,67 @@
+@font-face {
+    font-family: "sans-serif";
+}
+*{
+    font-family: 'Arial', fantasy;
+}
+.auth-block{
+    padding-top: 80px;
+    width: 330px;
+    margin: auto;
+}
+.submit-button {
+    margin-left: 7%;
+    margin-top: 30px;
+    background-color: #605CB1;
+    border: 2px solid #91FD7E;
+
+
+    text-align: center;
+    color: #91FD7E;
+    width: auto;
+    padding: 0.5em;
+    height: auto;
+    border-radius: 25px;
+}
+.register-button{
+    margin-left: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #605CB1;
+    border: 2px solid #91FD7E;
+
+
+    text-align: center;
+    color: #91FD7E;
+    width: 336px;
+    padding: 0.5em;
+    height: auto;
+    border-radius: 25px;
+}
+.register-button:hover{
+    transition: 0.5s;
+    background-color: #91FD7E;
+    border: 2px solid #605CB1;
+
+    color: #605CB1;
+
+}
+.input{
+    margin-top: 30px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+}
+.submit-button:hover{
+    transition: 0.5s;
+    background-color: #91FD7E;
+    border: 2px solid #605CB1;
+
+    color: #605CB1;
+}
+.input{
+    text-align: center;
+    color:  #605CB1;
+}
+#date{
+    width: 330px;
+}
