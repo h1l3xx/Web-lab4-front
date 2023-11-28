@@ -6,7 +6,6 @@ function SignUp(){
     return(
         <div className={'auth-block'}>
             <div className={'auth-form'}>
-
                 <label className={'label'}>Name</label>
                 <input id={'name'} className={'input'} type={'text'}></input>
 

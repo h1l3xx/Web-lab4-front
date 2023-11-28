@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Auth from "../auth";
 import SignUp from "../sign-up";
-import Graph from "../graph";
+import GraphPage from "../graph-page";
 import '../css/App.css';
 
 function App() {
@@ -11,7 +11,7 @@ function App() {
             <Routes>
                 <Route path="signUp" element={<SignUp />} />
                 <Route path="/" element={<Auth />} />
-                <Route path="graph" element={<Graph />} />
+                <Route path="graph" element={<GraphPage />} />
             </Routes>
         </div>
   );

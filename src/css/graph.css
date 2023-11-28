@@ -1,0 +1,61 @@
+.show-btn{
+    margin-top: 50px;
+    margin-bottom: 20px;
+    margin-left: 40%;
+    background-color: #605CB1;
+    border: 2px solid #91FD7E;
+
+
+    text-align: center;
+    color: #91FD7E;
+    width: 250px;
+    padding: 0.5em;
+    height: auto;
+    border-radius: 20px;
+}
+.show-btn:hover{
+    transition: 0.5s;
+    background-color: #91FD7E;
+    border: 2px solid #605CB1;
+
+    color: #605CB1;
+
+}
+.graph-cat{
+    margin-top: 30px;
+    margin-left: 35.5%;
+    width: 400px;
+    height: 400px;
+    border-radius: 30px;
+}
+#graph {
+    margin-left: 35.5%;
+}
+.choose-button{
+
+    background-color: #605CB1;
+    border: 2px solid #91FD7E;
+
+    margin: 5px;
+
+    text-align: center;
+    color: #91FD7E;
+    width: 105px;
+    padding: 0.5em;
+    height: auto;
+    border-radius: 20px;
+}
+.choose-button:hover{
+    transition: 0.5s;
+    background-color: #91FD7E;
+    border: 2px solid #605CB1;
+
+    color: #605CB1;
+
+}
+.spinner{
+    margin-top: 20px;
+    width: 330px;
+    border-radius: 20px;
+    text-align: center;
+}
