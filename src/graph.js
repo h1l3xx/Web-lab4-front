@@ -1,11 +1,12 @@
 
 import React from "react";
+import axios from "axios";
 
 class Dot{
     x = 0
     y = 0
     r = 0
-    result = "false"
+    result = false
 
     constructor(x, y, r, result) {
         this.x = x;
@@ -80,7 +81,6 @@ let dots = []
 
 
 function shoot(){
-    dots.push(new Dot(X, Y, R, "mb"))
     sendDot(X, Y, R)
 }
 
@@ -202,7 +202,6 @@ function start_click_graph(){
             const x = (xOffset - 200) / (40)
             const y = (yOffset - 200) * (-1) / (40)
 
-            dots.push(new Dot(x, y, r, "mb"))
             sendDot(x, y, r)
         })
     }
@@ -210,10 +209,24 @@ function start_click_graph(){
 
 let send = false
 function sendDot(x, y, r){
-    send = true
-    console.log(dots)
-    console.log(dots[dots.length-1])
-    drawOrCat()
+    axios({
+        method: 'post', //you can set what request you want to be
+        url: 'http://localhost:8080/results/check',
+        data: {
+            x : x,
+            y : y,
+            r : r,
+            id : sessionStorage.getItem("id")
+        },
+        headers: {
+            Authorization: "Bearer " + sessionStorage.getItem("token")
+        }
+    }).then( function (response) {
+        dots.push(new Dot(x, y, r, response.data))
+        send = true
+        console.log(dots[dots.length-1])
+        drawOrCat()
+    })
 }
 
 function drawOrCat(){

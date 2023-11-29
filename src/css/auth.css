@@ -10,8 +10,8 @@
     margin: auto;
 }
 .submit-button {
-    margin-left: 7%;
-    margin-top: 30px;
+    margin-top: 5%;
+    margin-left: 33%;
     background-color: #605CB1;
     border: 2px solid #91FD7E;
 
@@ -64,4 +64,44 @@
 }
 #date{
     width: 330px;
+}
+#email:invalid{
+    background-color: #F1948A;
+}
+#incorrect-email{
+    display: none;
+    color: #F1948A;
+}
+#incorrect-password{
+    display: none;
+    color: #F1948A;
+}
+#incorrect-date{
+    display: none;
+    color: #F1948A;
+}
+#password:invalid{
+    background-color: #F1948A;
+}
+#incorrect-form{
+    display: none;
+    color: #F1948A;
+}
+.label-name{
+    margin-left: 37%
+}
+.label-surname{
+    margin-left: 32%;
+}
+.label-date{
+    margin-left: 35%;
+}
+.label-email{
+    margin-left: 39%;
+}
+.label-login{
+    margin-left: 39%;
+}
+.label-pass{
+    margin-left: 33%;
 }
