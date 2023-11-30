@@ -1,6 +1,7 @@
 
 import React from "react";
 import {Link} from "react-router-dom";
+import axios from "axios";
 
 function SignUp(){
     return(
@@ -21,7 +22,7 @@ function SignUp(){
 
                 <label className={'label-login'}>Login</label>
                 <input onChange={checkLogin} id={'login'} className={'input'} type={'text'}></input>
-
+                <p id={"bad-login"}></p>
                 <label className={'label-pass'}>Password</label>
                 <input onChange={checkPass} minLength={8} maxLength={64} id={'password'} className={'input'} type={"password"}></input>
                 <p id={"incorrect-password"} >The password must be at least 8 characters long</p>
@@ -135,7 +136,7 @@ function checkEmail(){
     const invalidEmail = document.getElementById("incorrect-email")
     const pattern = new RegExp("[a-z0-9._%+-]*@[a-z0-9.-]*.[a-z]{2,4}")
     const email = document.getElementById("email").value
-    if (pattern.test(email)){
+    if (pattern.test(email) && email.indexOf(".") > 0){
         form.email = true
         form.emailValue = email
         invalidEmail.style.display = "none"
@@ -157,15 +158,28 @@ function getValues(){
             form.loginValue,
             form.passwordValue
         )
-        document.getElementById("linkToGraph").click()
+
+        axios({
+            method: 'post',
+            url: 'http://localhost:8080/auth/register',
+            data: {
+                name : form.nameValue,
+                surname : form.surnameValue,
+                birthday : form.dateValue,
+                email : form.emailValue,
+                login : form.loginValue,
+                password : form.passwordValue
+            }
+        }).then( function (response) {
+            if (response.data.success){
+                sessionStorage.setItem("token", response.data.token)
+                sessionStorage.setItem("id", response.data.id)
+                document.getElementById("linkToGraph").click()
+            }else{
+                document.getElementById("bad-login").innerText = response.data.error.description
+            }
+        })
     }else{
         document.getElementById("incorrect-form").style.display = "block"
     }
-
-    //Отправка на бек и ожидание ответа
-
-    //Проверка ответа
-
-    //Переадресация на страницу с графом
-
 }

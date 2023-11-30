@@ -4,24 +4,24 @@ import React from "react";
 
 function Table(){
     return(
-        <div className={'table'}>
-            <div className={"column"}>
-                <div>X</div>
+        <div id={"table"} className={'table'}>
+            <div id={"x-column"} className={"column"}>
+                <div className={"head"}>X</div>
             </div>
-            <div className={"column"}>
-                <div>Y</div>
+            <div id={"y-column"} className={"column"}>
+                <div className={"head"} >Y</div>
             </div>
-            <div className={"column"}>
-                <div>R</div>
+            <div id={"r-column"} className={"column"}>
+                <div className={"head"}>R</div>
             </div>
-            <div className={"column"}>
-                <div>Date</div>
+            <div id={"date-column"} className={"column"}>
+                <div className={"head"}>Date</div>
             </div>
-            <div className={"column"}>
-                <div>Result</div>
+            <div id={"result-column"} className={"column"}>
+                <div className={"head"}>Result</div>
             </div>
-            <div className={"column"}>
-                <div></div>
+            <div id={"resend-column"} className={"column"}>
+                <div className={"head"}>Try Again</div>
             </div>
         </div>
 

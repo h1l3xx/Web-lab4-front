@@ -210,7 +210,7 @@ function start_click_graph(){
 let send = false
 function sendDot(x, y, r){
     axios({
-        method: 'post', //you can set what request you want to be
+        method: 'post',
         url: 'http://localhost:8080/results/check',
         data: {
             x : x,
@@ -222,16 +222,46 @@ function sendDot(x, y, r){
             Authorization: "Bearer " + sessionStorage.getItem("token")
         }
     }).then( function (response) {
-        dots.push(new Dot(x, y, r, response.data))
+        dots.push(new Dot(x, y, r, response.data.result))
         send = true
-        console.log(dots[dots.length-1])
+        addInTable(response.data)
         drawOrCat()
     })
 }
 
+function addInTable(dot){
+    const x_column = document.getElementById("x-column")
+    const y_column = document.getElementById("y-column")
+    const r_column = document.getElementById("r-column")
+    const result_column = document.getElementById("result-column")
+    const date_column = document.getElementById("date-column")
+    const resend_column = document.getElementById("resend-column")
+
+    let res = ""
+    if (dot.result){
+        res = "<br><div class='hit'>HIT</div>"
+    }else{
+        res = "<br><div class='miss'>MISS</div>"
+    }
+
+    x_column.innerHTML = x_column.innerHTML + "<br><div class='item'>" + dot.x + "</div>"
+    y_column.innerHTML = y_column.innerHTML + "<br><div class='item'>" + dot.y + "</div>"
+    r_column.innerHTML = r_column.innerHTML + "<br><div class='item'>" + dot.r + "</div>"
+    result_column.innerHTML = result_column.innerHTML + res
+    date_column.innerHTML = date_column.innerHTML + "<br><div class='item'>" + Date.now() + "</div>"
+
+    const button = "<br><button class='again' onclick='resendDot()' type='submit'>*</button>"
+
+    resend_column.innerHTML = resend_column.innerHTML + button
+
+
+}
+
+function resendDot(x, y, r){
+    sendDot(x, y, r)
+}
+
 function drawOrCat(){
-
-
 
     const canvas = new Canvas()
 
@@ -240,11 +270,6 @@ function drawOrCat(){
         send = false
         canvas.drawOldDots(dots)
     }else{
-
-        dots = []
-
-        console.log(dots.length)
-
         document.getElementById("hidden").click()
 
         const btn = document.getElementById("show-btn")
@@ -258,12 +283,29 @@ function drawOrCat(){
             graph.style.display = "block"
             graph.style.marginBottom = "30px"
             canvas.drawGraph(2)
+            const id = sessionStorage.getItem("id")
+
+            axios({
+                method: 'get',
+                url: `http://localhost:8080/results/user/${id}`,
+                headers: {
+                    Authorization: "Bearer " + sessionStorage.getItem("token")
+                }
+            }).then( function (response) {
+                for(let i = 0; i < response.data.length; i++){
+                    dots.push(new Dot(response.data[i].x, response.data[i].y, response.data[i].r, response.data[i].result))
+                    addInTable(response.data[i])
+                }
+                send = true
+                drawOrCat()
+            })
         }else{
             btn.innerText = "Show Graph"
             cat.style.display = "block"
             cat.style.marginLeft = "35.5%"
             cat.style.marginTop = "57px"
             graph.style.display = "none"
+            document.getElementById("table").innerHTML = "<div id='x-column' class='column'><div class='head'>X</div></div> <div id='y-column' class='column'><div class='head'>Y</div></div> <div id='r-column' class='column'><div class='head'>R</div></div> <div id='date-column' class='column'><div class='head'>Date</div></div> <div id='result-column' class='column'><div class='head'>Result</div></div> <div id='resend-column' class='column'><div class='head'>Try Again</div></div>"
         }
     }
 }
