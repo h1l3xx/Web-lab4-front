@@ -19,12 +19,12 @@ header{
 }
 .forgot{
     text-align: center;
-    width: 330px;
+    width: 360px;
     margin: auto;
 }
 .cat{
-    width: 330px;
-    height: 330px;
+    width: 360px;
+    height: 360px;
     border-radius: 30px;
 }
 .cat:hover{

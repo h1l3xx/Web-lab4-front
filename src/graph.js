@@ -1,6 +1,10 @@
 
 import React from "react";
 import axios from "axios";
+import {Link} from "react-router-dom";
+
+
+var socket = new WebSocket("ws://localhost:8080/ws");
 
 class Dot{
     x = 0
@@ -20,8 +24,9 @@ function Graph(){
     return(
         <div>
             <div className={'graph'}>
-                <button id = "show-btn" className={"show-btn"} onClick={drawOrCat}> Show Graph</button><br/>
-                <p className={"text"}>*If you want to delete all the dots, then just click on the "Show Cat"</p>
+                <button id = "show-btn" className={"show-btn"} onClick={drawOrCat}>Show Graph</button>
+                <button id = "log-out" className={"log-out"} onClick={logOut} >Log Out</button>
+                <br/>
                 <img id={"graph-cat"} className={"graph-cat"} src={require('./image/plink-cat.gif')} alt={""}/><br/>
                 <canvas id={"graph"}></canvas>
             </div>
@@ -29,19 +34,19 @@ function Graph(){
                 <div className={"x-block"}>
                     <label className={"x-label"}> Choose X: </label>
                     <div className={"x-stack"}>
-                        <button onClick={setXM2} className={"choose-button"} id={"x-button"} value={"-2.0"}>-2.0</button>
-                        <button onClick={setXM15} className={"choose-button"} id={"x-button"} value={"-1.5"}>-1.5</button>
-                        <button onClick={setXM1} className={"choose-button"} id={"x-button"} value={"-1.0"}>-1.0</button>
+                        <button onClick={setXM2} className={"choose-button"} id={"x-button-1"} value={"-2.0"}>-2.0</button>
+                        <button onClick={setXM15} className={"choose-button"} id={"x-button-2"} value={"-1.5"}>-1.5</button>
+                        <button onClick={setXM1} className={"choose-button"} id={"x-button-3"} value={"-1.0"}>-1.0</button>
                     </div>
                     <div>
-                        <button onClick={setXM05} className={"choose-button"} id={"x-button"} value={"-0.5"}>-0.5</button>
-                        <button onClick={setX0} className={"choose-button"} id={"x-button"} value={"0.0"}>0.0</button>
-                        <button onClick={setX05} className={"choose-button"} id={"x-button"} value={"0.5"}>0.5</button>
+                        <button onClick={setXM05} className={"choose-button"} id={"x-button-4"} value={"-0.5"}>-0.5</button>
+                        <button onClick={setX0} className={"choose-button"} id={"x-button-5"} value={"0.0"}>0.0</button>
+                        <button onClick={setX05} className={"choose-button"} id={"x-button-6"} value={"0.5"}>0.5</button>
                     </div>
                     <div>
-                        <button onClick={setX1} className={"choose-button"} id={"x-button"} value={"1.0"}>1.0</button>
-                        <button onClick={setX15} className={"choose-button"} id={"x-button"} value={"1.5"}>1.5</button>
-                        <button onClick={setX2} className={"choose-button"} id={"x-button"} value={"2.0"}>2.0</button>
+                        <button onClick={setX1} className={"choose-button"} id={"x-button-7"} value={"1.0"}>1.0</button>
+                        <button onClick={setX15} className={"choose-button"} id={"x-button-8"} value={"1.5"}>1.5</button>
+                        <button onClick={setX2} className={"choose-button"} id={"x-button-9"} value={"2.0"}>2.0</button>
                     </div>
                 </div>
                 <div className={"y-block"}>
@@ -53,23 +58,28 @@ function Graph(){
                 <div className={"r-block"}>
                     <label className={"r-label"}>Choose R:</label>
                     <div className={"r-stack"}>
-                        <button onClick={setRM2} className={"choose-button"} id={"r-button"}>-2.0</button>
-                        <button onClick={setRM15} className={"choose-button"} id={"r-button"}>-1.5</button>
-                        <button onClick={setRM1} className={"choose-button"} id={"r-button"}>-1.0</button>
+                        <button onClick={setRM2} className={"choose-button"} id={"r-button-1"}>-2.0</button>
+                        <button onClick={setRM15} className={"choose-button"} id={"r-button-2"}>-1.5</button>
+                        <button onClick={setRM1} className={"choose-button"} id={"r-button-3"}>-1.0</button>
                     </div>
                     <div>
-                        <button onClick={setRM05} className={"choose-button"} id={"r-button"}>-0.5</button>
-                        <button onClick={setR0} className={"choose-button"} id={"r-button"}>0.0</button>
-                        <button onClick={setR05} className={"choose-button"} id={"r-button"}>0.5</button>
+                        <button onClick={setRM05} className={"choose-button"} id={"r-button-4"}>-0.5</button>
+                        <button onClick={setR0} className={"choose-button"} id={"r-button-5"}>0.0</button>
+                        <button onClick={setR05} className={"choose-button"} id={"r-button-6"}>0.5</button>
                     </div>
                     <div>
-                        <button onClick={setR1} className={"choose-button"} id={"r-button"}>1.0</button>
-                        <button onClick={setR15} className={"choose-button"} id={"r-button"}>1.5</button>
-                        <button onClick={setR2} className={"choose-button"} id={"r-button"}>2.0</button>
+                        <button onClick={setR1} className={"choose-button"} id={"r-button-7"}>1.0</button>
+                        <button onClick={setR15} className={"choose-button"} id={"r-button-8"}>1.5</button>
+                        <button onClick={setR2} className={"choose-button"} id={"r-button-9"}>2.0</button>
                     </div>
                 </div>
-                <button onClick={shoot} className={"shoot"} type={"submit"}>SHOOT</button>
+                <div className={"buttons-block"}>
+                    <button onClick={shoot} className={"shoot"} type={"submit"}>SHOOT</button><br/>
+                    <button onClick={clear} className={"clear"} type={"submit"}>Clear Graph</button><br/>
+                    <button onClick={del} className={"delete"} type={"submit"}>Delete All</button><br/>
+                </div>
                 <a onClick={start_click_graph} id={"hidden"} ></a>
+                <Link id={"go-to-home-page"} to={"/"}></Link>
             </div>
         </div>
 
@@ -77,9 +87,37 @@ function Graph(){
 }
 export default Graph
 
+function logOut(){
+    sessionStorage.removeItem("id")
+    sessionStorage.removeItem("token")
+    document.getElementById("go-to-home-page").click()
+}
+
+function clear(){
+    dots = []
+    const canvas = new Canvas()
+    canvas.drawGraph(R)
+}
+
+function del(){
+    const id = sessionStorage.getItem("id")
+    axios({
+        method: 'delete',
+        url: `http://localhost:8080/results/user/${id}`,
+        headers: {
+            Authorization: "Bearer " + sessionStorage.getItem("token")
+        }
+    }).then( function () {
+        clear()
+        clearTable()
+    })
+}
+
 let dots = []
 
-
+function clearTable(){
+    document.getElementById("table").innerHTML = "<div id='x-column' class='column'><div class='head'>X</div></div> <div id='y-column' class='column'><div class='head'>Y</div></div> <div id='r-column' class='column'><div class='head'>R</div></div> <div id='date-column' class='column'><div class='head'>Date</div></div> <div id='result-column' class='column'><div class='head'>Result</div></div> <div id='resend-column' class='column'><div class='head'>Try Again</div></div>"
+}
 function shoot(){
     sendDot(X, Y, R)
 }
@@ -97,85 +135,232 @@ function setY(){
 
 let X = 0
 function setXM2(){
+    clearXButtons()
+
+    const button = document.getElementById("x-button-1")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     X = -2.0
     console.log(X)
 }
 function setXM15(){
+    clearXButtons()
+
+    const button = document.getElementById("x-button-2")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     X = -1.5
     console.log(X)
 }
 function setXM1(){
+    clearXButtons()
+
+    const button = document.getElementById("x-button-3")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     X = -1.0
     console.log(X)
 }
 function setXM05(){
+    clearXButtons()
+
+    const button = document.getElementById("x-button-4")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     X = -0.5
     console.log(X)
 }
 function setX0(){
+    clearXButtons()
+
+    const button = document.getElementById("x-button-5")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     X = 0.0
     console.log(X)
 }
 function setX05(){
+    clearXButtons()
+
+    const button = document.getElementById("x-button-6")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     X = 0.5
     console.log(X)
 }
 function setX1(){
+    clearXButtons()
+
+    const button = document.getElementById("x-button-7")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     X = 1
     console.log(X)
 }
 function setX15(){
+    clearXButtons()
+
+    const button = document.getElementById("x-button-8")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     X = 1.5
     console.log(X)
 }
 function setX2(){
+    clearXButtons()
+
+    const button = document.getElementById("x-button-9")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     X = 2.0
     console.log(X)
 }
 
 let R = 2
 
+
+function clearButton(button){
+    button.style.backgroundColor = "#605CB1"
+    button.style.color = "#91FD7E"
+}
+
+function clearXButtons(){
+    const x1 = document.getElementById("x-button-1")
+    clearButton(x1)
+    const x2 = document.getElementById("x-button-2")
+    clearButton(x2)
+    const x3 = document.getElementById("x-button-3")
+    clearButton(x3)
+    const x4 = document.getElementById("x-button-4")
+    clearButton(x4)
+    const x5 = document.getElementById("x-button-5")
+    clearButton(x5)
+    const x6 = document.getElementById("x-button-6")
+    clearButton(x6)
+    const x7 = document.getElementById("x-button-7")
+    clearButton(x7)
+    const x8 = document.getElementById("x-button-8")
+    clearButton(x8)
+    const x9 = document.getElementById("x-button-9")
+    clearButton(x9)
+}
+
+function clearRButtons(){
+    const r1 = document.getElementById("r-button-1")
+    clearButton(r1)
+    const r2 = document.getElementById("r-button-2")
+    clearButton(r2)
+    const r3 = document.getElementById("r-button-3")
+    clearButton(r3)
+    const r4 = document.getElementById("r-button-4")
+    clearButton(r4)
+    const r5 = document.getElementById("r-button-5")
+    clearButton(r5)
+    const r6 = document.getElementById("r-button-6")
+    clearButton(r6)
+    const r7 = document.getElementById("r-button-7")
+    clearButton(r7)
+    const r8 = document.getElementById("r-button-8")
+    clearButton(r8)
+    const r9 = document.getElementById("r-button-9")
+    clearButton(r9)
+}
+
 function setRM2(){
+
+    clearRButtons()
+
+    const button = document.getElementById("r-button-1")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     R = -2.0
     drawByR(R)
     console.log(R)
 }
 function setRM15(){
+
+    clearRButtons()
+
+    const button = document.getElementById("r-button-2")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     R = -1.5
     drawByR(R)
     console.log(R)
 }
 function setRM1(){
+
+    clearRButtons()
+
+    const button = document.getElementById("r-button-3")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     R = -1.0
     drawByR(R)
     console.log(R)
 }
 function setRM05(){
+
+    clearRButtons()
+
+    const button = document.getElementById("r-button-4")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     R = -0.5
     drawByR(R)
     console.log(R)
 }
 function setR0(){
+
+    clearRButtons()
+
+    const button = document.getElementById("r-button-5")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     R = 0.0
     drawByR(R)
     console.log(R)
 }
 function setR05(){
+
+    clearRButtons()
+
+    const button = document.getElementById("r-button-6")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     R = 0.5
     drawByR(R)
     console.log(R)
 }
 function setR1(){
+
+    clearRButtons()
+
+    const button = document.getElementById("r-button-7")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     R = 1
     drawByR(R)
     console.log(R)
 }
 function setR15(){
+
+    clearRButtons()
+
+    const button = document.getElementById("r-button-8")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     R = 1.5
     drawByR(R)
     console.log(R)
 }
 function setR2(){
+
+    clearRButtons()
+
+    const button = document.getElementById("r-button-9")
+    button.style.backgroundColor = "#91FD7E"
+    button.style.color = "#605CB1"
     R = 2.0
     drawByR(R)
     console.log(R)
@@ -227,8 +412,12 @@ function sendDot(x, y, r){
         addInTable(response.data)
         drawOrCat()
     })
-}
 
+    socket.send("")
+}
+socket.onmessage = (event) => {
+    console.log(event.data);
+};
 function addInTable(dot){
     const x_column = document.getElementById("x-column")
     const y_column = document.getElementById("y-column")
@@ -250,7 +439,7 @@ function addInTable(dot){
     result_column.innerHTML = result_column.innerHTML + res
     date_column.innerHTML = date_column.innerHTML + "<br><div class='item'>" + Date.now() + "</div>"
 
-    const button = "<br><button class='again' onclick='resendDot()' type='submit'>*</button>"
+    const button = "<br><button class='again' onclick='resendDot' type='submit'>*</button>"
 
     resend_column.innerHTML = resend_column.innerHTML + button
 
@@ -305,16 +494,16 @@ function drawOrCat(){
             cat.style.marginLeft = "35.5%"
             cat.style.marginTop = "57px"
             graph.style.display = "none"
-            document.getElementById("table").innerHTML = "<div id='x-column' class='column'><div class='head'>X</div></div> <div id='y-column' class='column'><div class='head'>Y</div></div> <div id='r-column' class='column'><div class='head'>R</div></div> <div id='date-column' class='column'><div class='head'>Date</div></div> <div id='result-column' class='column'><div class='head'>Result</div></div> <div id='resend-column' class='column'><div class='head'>Try Again</div></div>"
+            clearTable()
         }
     }
 }
 
 class Canvas {
     size = 400;
-    red = "#FF0000"
-    gray = "#696969"
-    green = "#19ff19"
+    // red = "#FF0000"
+    // gray = "#696969"
+    // green = "#19ff19"
 
     constructor() {
         this.canvas = document.getElementById("graph");
@@ -515,12 +704,12 @@ class Canvas {
     //     this.ctx.fill();
     //     this.ctx.closePath()
     // }
-    drawGrey(x, y){
-        this.ctx.fillStyle = "#696969"
-        this.ctx.beginPath();
-        this.ctx.arc(200 + (x * 40), 200- (y * 40), 4, 0, 2*Math.PI, false);
-        this.ctx.fill();
-        this.ctx.closePath()
-    }
+    // drawGrey(x, y){
+    //     this.ctx.fillStyle = "#696969"
+    //     this.ctx.beginPath();
+    //     this.ctx.arc(200 + (x * 40), 200- (y * 40), 4, 0, 2*Math.PI, false);
+    //     this.ctx.fill();
+    //     this.ctx.closePath()
+    // }
 }
 

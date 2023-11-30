@@ -16,7 +16,7 @@ function Auth(){
                 <button onClick={auth} id={"submit-button"} className={"submit-button"} type={'submit'}>Submit</button>
                 <p id={"error"}></p>
                 <div className={'forgot'}>
-                    <p id={"forgot-text"} >Forgot your password? ↓Click on this cat!↓</p>
+                    <p id={"forgot-text"} >Forgot your password?<br/>↓ Click on this cat! ↓</p>
                     <img onClick={thForClick} className={"cat"} src={require('./image/cats.gif')} alt={""}/>
                 </div>
             </div>
@@ -27,7 +27,7 @@ function Auth(){
 export default Auth
 
 function thForClick(){
-    document.getElementById("forgot-text").innerText = "Thanks for click on cat! Let's create new account!"
+    document.getElementById("forgot-text").innerText = "Thanks for clicking on the cat! Let's create a new account!"
 }
 
 function auth(){

@@ -1,7 +1,7 @@
 .show-btn{
     margin-top: 50px;
     margin-bottom: 20px;
-    margin-left: 40%;
+    margin-left: 32%;
     background-color: #605CB1;
     border: 2px solid #91FD7E;
 
@@ -21,6 +21,30 @@
     color: #605CB1;
 
 }
+.log-out{
+    margin-top: 50px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    background-color: #605CB1;
+    border: 2px solid #91FD7E;
+
+
+    text-align: center;
+    color: #91FD7E;
+    width: 250px;
+    padding: 0.5em;
+    height: auto;
+    border-radius: 20px;
+}
+.log-out:hover{
+    transition: 0.5s;
+    background-color: #91FD7E;
+    border: 2px solid #605CB1;
+
+    color: #605CB1;
+
+}
+
 .graph-cat{
     margin-top: 30px;
     margin-left: 35.5%;
@@ -58,4 +82,44 @@
     width: 330px;
     border-radius: 20px;
     text-align: center;
+}
+.clear{
+    background-color: #605CB1;
+    border: 2px solid #91FD7E;
+
+    margin-top: 10px;
+
+    text-align: center;
+    color: #91FD7E;
+    width: 200px;
+    padding: 0.5em;
+    height: auto;
+    border-radius: 20px;
+}
+.clear:hover{
+    transition: 0.5s;
+    background-color: #91FD7E;
+    border: 2px solid #605CB1;
+
+    color: #605CB1;
+}
+.delete{
+    background-color: #605CB1;
+    border: 2px solid #91FD7E;
+
+    margin-top: 10px;
+
+    text-align: center;
+    color: #91FD7E;
+    width: 200px;
+    padding: 0.5em;
+    height: auto;
+    border-radius: 20px;
+}
+.delete:hover{
+    transition: 0.5s;
+    background-color: #91FD7E;
+    border: 2px solid #605CB1;
+
+    color: #605CB1;
 }
