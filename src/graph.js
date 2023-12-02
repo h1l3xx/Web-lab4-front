@@ -4,8 +4,6 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 
 
-var socket = new WebSocket("ws://localhost:8080/ws");
-
 class Dot{
     x = 0
     y = 0
@@ -218,6 +216,7 @@ function setX2(){
 
 let R = 2
 
+let connect = false
 
 function clearButton(button){
     button.style.backgroundColor = "#605CB1"
@@ -354,6 +353,8 @@ function setR15(){
     drawByR(R)
     console.log(R)
 }
+var socket
+
 function setR2(){
 
     clearRButtons()
@@ -393,31 +394,32 @@ function start_click_graph(){
 }
 
 let send = false
+let block = false
 function sendDot(x, y, r){
-    axios({
-        method: 'post',
-        url: 'http://localhost:8080/results/check',
-        data: {
-            x : x,
-            y : y,
-            r : r,
-            id : sessionStorage.getItem("id")
-        },
-        headers: {
-            Authorization: "Bearer " + sessionStorage.getItem("token")
-        }
-    }).then( function (response) {
-        dots.push(new Dot(x, y, r, response.data.result))
-        send = true
-        addInTable(response.data)
-        drawOrCat()
-    })
 
-    socket.send("")
+    socket.send(`${sessionStorage.getItem("id")} dot`)
+    if (!block){
+        axios({
+            method: 'post',
+            url: 'http://localhost:8080/results/check',
+            data: {
+                x : x,
+                y : y,
+                r : r,
+                id : sessionStorage.getItem("id")
+            },
+            headers: {
+                Authorization: "Bearer " + sessionStorage.getItem("token")
+            }
+        }).then( function (response) {
+            dots.push(new Dot(x, y, r, response.data.result))
+            send = true
+            addInTable(response.data)
+            drawOrCat()
+        })
+    }
 }
-socket.onmessage = (event) => {
-    console.log(event.data);
-};
+
 function addInTable(dot){
     const x_column = document.getElementById("x-column")
     const y_column = document.getElementById("y-column")
@@ -450,9 +452,29 @@ function resendDot(x, y, r){
     sendDot(x, y, r)
 }
 
+
+function setSocket(){
+    socket = new WebSocket("ws://localhost:8080/ws")
+    socket.onmessage = (event) => {
+        console.log(event.data)
+    };
+    socket.onclose = () => {
+        document.getElementById("go-to-home-page").click()
+    }
+    socket.onopen = () => {
+        socket.send(`${sessionStorage.getItem("id")} connect`)
+    }
+}
+
 function drawOrCat(){
 
     const canvas = new Canvas()
+
+    if (!connect){
+        block = false
+        connect = true
+        setSocket()
+    }
 
     if (send){
         canvas.drawGraph(R)

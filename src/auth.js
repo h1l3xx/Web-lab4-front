@@ -26,6 +26,7 @@ function Auth(){
 }
 export default Auth
 
+
 function thForClick(){
     document.getElementById("forgot-text").innerText = "Thanks for clicking on the cat! Let's create a new account!"
 }
