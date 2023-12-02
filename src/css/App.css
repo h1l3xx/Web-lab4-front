@@ -23,26 +23,6 @@
 .r-label{
     margin-left: 105px;
 }
-.again{
-    background-color: #605CB1;
-    border: 2px solid #91FD7E;
-
-    margin-left: 65px;
-    margin-top: 5px;
-
-    text-align: center;
-    color: #91FD7E;
-    padding: 0.2em;
-    height: auto;
-    border-radius: 20px;
-}
-.again:hover{
-    transition: 0.5s;
-    background-color: #91FD7E;
-    border: 2px solid #605CB1;
-
-    color: #605CB1;
-}
 .shoot{
     background-color: #605CB1;
     border: 2px solid #91FD7E;
@@ -68,7 +48,7 @@
     white-space:nowrap
 }
 .table div{
-    width:16%;
+    width: 20%;
     text-align: center;
     display:inline-block;
 

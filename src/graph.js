@@ -9,12 +9,14 @@ class Dot{
     y = 0
     r = 0
     result = false
+    time = ""
 
-    constructor(x, y, r, result) {
+    constructor(x, y, r, result, time) {
         this.x = x;
         this.y = y;
         this.r = r;
         this.result = result;
+        this.time = time
     }
 }
 
@@ -50,6 +52,7 @@ function Graph(){
                 <div className={"y-block"}>
                     <label className={"y-label"}>Choose Y:</label>
                     <div className={"y-input"}>
+                        <p id={"incorrect-form"} >The value should be between -5 and 3</p>
                         <input id={"Y"} onChange={setY} className={"spinner"} type={"number"} defaultValue={0} step={0.1} min={-5} max={3}></input>
                     </div>
                 </div>
@@ -76,7 +79,7 @@ function Graph(){
                     <button onClick={clear} className={"clear"} type={"submit"}>Clear Graph</button><br/>
                     <button onClick={del} className={"delete"} type={"submit"}>Delete All</button><br/>
                 </div>
-                <a onClick={start_click_graph} id={"hidden"} ></a>
+                <p onClick={start_click_graph} id={"hidden"} ></p>
                 <Link id={"go-to-home-page"} to={"/"}></Link>
             </div>
         </div>
@@ -97,6 +100,7 @@ function clear(){
     canvas.drawGraph(R)
 }
 
+let validY = false
 function del(){
     const id = sessionStorage.getItem("id")
     axios({
@@ -114,7 +118,7 @@ function del(){
 let dots = []
 
 function clearTable(){
-    document.getElementById("table").innerHTML = "<div id='x-column' class='column'><div class='head'>X</div></div> <div id='y-column' class='column'><div class='head'>Y</div></div> <div id='r-column' class='column'><div class='head'>R</div></div> <div id='date-column' class='column'><div class='head'>Date</div></div> <div id='result-column' class='column'><div class='head'>Result</div></div> <div id='resend-column' class='column'><div class='head'>Try Again</div></div>"
+    document.getElementById("table").innerHTML = "<div id='x-column' class='column'><div class='head'>X</div></div> <div id='y-column' class='column'><div class='head'>Y</div></div> <div id='r-column' class='column'><div class='head'>R</div></div> <div id='date-column' class='column'><div class='head'>Date</div></div> <div id='result-column' class='column'><div class='head'>Result</div></div>"
 }
 function shoot(){
     sendDot(X, Y, R)
@@ -127,6 +131,13 @@ let Y = 0
 
 function setY(){
     Y =  Number(document.getElementById("Y").value.replace(",", "."))
+    if (Y > 3 || Y < -5){
+        document.getElementById("incorrect-form").style.display = "block"
+        validY = false
+    }else{
+        document.getElementById("incorrect-form").style.display = "none"
+        validY = true
+    }
     console.log(Y)
 }
 
@@ -353,7 +364,7 @@ function setR15(){
     drawByR(R)
     console.log(R)
 }
-var socket
+let socket
 
 function setR2(){
 
@@ -398,7 +409,7 @@ let block = false
 function sendDot(x, y, r){
 
     socket.send(`${sessionStorage.getItem("id")} dot`)
-    if (!block){
+    if (!block && validY){
         axios({
             method: 'post',
             url: 'http://localhost:8080/results/check',
@@ -412,7 +423,8 @@ function sendDot(x, y, r){
                 Authorization: "Bearer " + sessionStorage.getItem("token")
             }
         }).then( function (response) {
-            dots.push(new Dot(x, y, r, response.data.result))
+            const time = new Date()
+            dots.push(new Dot(x, y, r, response.data.result, `${time.getHours()}/${time.getMinutes()}/${time.getSeconds()}`))
             send = true
             addInTable(response.data)
             drawOrCat()
@@ -420,18 +432,17 @@ function sendDot(x, y, r){
     }
 }
 
-function addInTable(dot){
+function addInTable(dot) {
     const x_column = document.getElementById("x-column")
     const y_column = document.getElementById("y-column")
     const r_column = document.getElementById("r-column")
     const result_column = document.getElementById("result-column")
     const date_column = document.getElementById("date-column")
-    const resend_column = document.getElementById("resend-column")
 
-    let res = ""
-    if (dot.result){
+    let res
+    if (dot.result) {
         res = "<br><div class='hit'>HIT</div>"
-    }else{
+    } else {
         res = "<br><div class='miss'>MISS</div>"
     }
 
@@ -439,20 +450,10 @@ function addInTable(dot){
     y_column.innerHTML = y_column.innerHTML + "<br><div class='item'>" + dot.y + "</div>"
     r_column.innerHTML = r_column.innerHTML + "<br><div class='item'>" + dot.r + "</div>"
     result_column.innerHTML = result_column.innerHTML + res
-    date_column.innerHTML = date_column.innerHTML + "<br><div class='item'>" + Date.now() + "</div>"
-
-    const button = "<br><button class='again' onclick='resendDot' type='submit'>*</button>"
-
-    resend_column.innerHTML = resend_column.innerHTML + button
+    date_column.innerHTML = date_column.innerHTML + "<br><div class='item'>" + dot.time.slice(11, 19) + "</div>"
 
 
 }
-
-function resendDot(x, y, r){
-    sendDot(x, y, r)
-}
-
-
 function setSocket(){
     socket = new WebSocket("ws://localhost:8080/ws")
     socket.onmessage = (event) => {
@@ -504,16 +505,21 @@ function drawOrCat(){
                 }
             }).then( function (response) {
                 for(let i = 0; i < response.data.length; i++){
-                    dots.push(new Dot(response.data[i].x, response.data[i].y, response.data[i].r, response.data[i].result))
+                    dots.push(new Dot(response.data[i].x, response.data[i].y, response.data[i].r, response.data[i].result, response.data[i].time))
                     addInTable(response.data[i])
                 }
                 send = true
                 drawOrCat()
             })
         }else{
+            const width = window.innerWidth
+            if (width <  728){
+                cat.style.marginLeft = "21%"
+            }else{
+                cat.style.marginLeft = "35.5%"
+            }
             btn.innerText = "Show Graph"
             cat.style.display = "block"
-            cat.style.marginLeft = "35.5%"
             cat.style.marginTop = "57px"
             graph.style.display = "none"
             clearTable()
@@ -709,29 +715,4 @@ class Canvas {
 
         this.ctx.closePath();
     }
-    // drawRed(x, y){
-    //     this.ctx.fillStyle = "#FF0000"
-    //     this.ctx.beginPath();
-    //     const arcX = 200 + (x * 40)
-    //     const arcY =  200- (y * 40)
-    //     console.log(arcX, arcY)
-    //     this.ctx.arc(arcX, arcY, 4, 0, 2*Math.PI, false);
-    //     this.ctx.fill();
-    //     this.ctx.closePath()
-    // }
-    // drawGreen(x, y){
-    //     this.ctx.fillStyle = "#19ff19"
-    //     this.ctx.beginPath();
-    //     this.ctx.arc(200 + (x * 40), 200- (y * 40), 4, 0, 2*Math.PI, false);
-    //     this.ctx.fill();
-    //     this.ctx.closePath()
-    // }
-    // drawGrey(x, y){
-    //     this.ctx.fillStyle = "#696969"
-    //     this.ctx.beginPath();
-    //     this.ctx.arc(200 + (x * 40), 200- (y * 40), 4, 0, 2*Math.PI, false);
-    //     this.ctx.fill();
-    //     this.ctx.closePath()
-    // }
 }
-

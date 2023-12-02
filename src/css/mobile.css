@@ -1,0 +1,100 @@
+@media screen and (width <= 728px) {
+    #choose-block{
+        display: block;
+
+        flex-direction: row;
+
+        justify-content: flex-start;
+    }
+    .x-block{
+        margin-left: 21%;
+    }
+    .y-block{
+        margin-top: 30px;
+        margin-left: 21%;
+    }
+    .r-block{
+        margin-top: 30px;
+        margin-left: 21%;
+    }
+    .x-label{
+        margin-left: 21%;
+    }
+    .y-label{
+        margin-left: 21%;
+    }
+    .r-label{
+        margin-left: 21%;
+    }
+    .shoot{
+        background-color: #605CB1;
+        border: 2px solid #91FD7E;
+
+        margin-top: 35px;
+        margin-left: 37%;
+
+        text-align: center;
+        color: #91FD7E;
+        width: 135px;
+        padding: 0.5em;
+        height: auto;
+        border-radius: 20px;
+    }
+    .log-out{
+        margin-top: 50px;
+        margin-bottom: 20px;
+        margin-left: 20px;
+        background-color: #605CB1;
+        border: 2px solid #91FD7E;
+
+
+        text-align: center;
+        color: #91FD7E;
+        width: 150px;
+        padding: 0.5em;
+        height: auto;
+        border-radius: 20px;
+    }
+    .show-btn{
+        margin-top: 50px;
+        margin-bottom: 20px;
+        margin-left: 20%;
+        background-color: #605CB1;
+        border: 2px solid #91FD7E;
+
+
+        text-align: center;
+        color: #91FD7E;
+        width: 150px;
+        padding: 0.5em;
+        height: auto;
+        border-radius: 20px;
+    }
+    .clear{
+        background-color: #605CB1;
+        border: 2px solid #91FD7E;
+
+        margin-top: 20px;
+        margin-left: 32%;
+        text-align: center;
+        color: #91FD7E;
+        width: 200px;
+        padding: 0.5em;
+        height: auto;
+        border-radius: 20px;
+    }
+    .delete{
+        background-color: #605CB1;
+        border: 2px solid #91FD7E;
+
+        margin-top: 20px;
+        margin-left: 32%;
+
+        text-align: center;
+        color: #91FD7E;
+        width: 200px;
+        padding: 0.5em;
+        height: auto;
+        border-radius: 20px;
+    }
+}

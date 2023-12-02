@@ -20,9 +20,6 @@ function Table(){
             <div id={"result-column"} className={"column"}>
                 <div className={"head"}>Result</div>
             </div>
-            <div id={"resend-column"} className={"column"}>
-                <div className={"head"}>Try Again</div>
-            </div>
         </div>
 
     )

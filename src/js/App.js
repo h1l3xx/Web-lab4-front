@@ -4,6 +4,8 @@ import Auth from "../auth";
 import SignUp from "../sign-up";
 import GraphPage from "../graph-page";
 import '../css/App.css';
+import '../css/tablet.css'
+import '../css/mobile.css'
 
 function App() {
   return (
