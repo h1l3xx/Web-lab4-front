@@ -48,7 +48,7 @@
     white-space:nowrap
 }
 .table div{
-    width: 20%;
+    width: 18.5%;
     text-align: center;
     display:inline-block;
 
@@ -74,4 +74,33 @@
 }
 #bad-login{
     color: #F1948A;
+}
+.go-to-last-dot{
+    text-decoration: none;
+    color: #91FD7E;
+    border: 2px #91FD7E solid;
+    border-radius: 20px;
+    background-color: #605CB1;
+    padding: 12px;
+    width: 200px;
+    margin-left: 31.5%;
+}
+.go-to-last-dot:hover{
+    transition: 0.5s;
+    border: 2px #605CB1 solid;
+    color: #605CB1;
+    background-color: #91FD7E;
+}
+.go-to-graph{
+    text-decoration: none;
+    padding: 17px 23px;
+    border: 2px #91FD7E solid;
+    border-radius: 15px;
+    color: #91FD7E;
+    background-color: #605CB1;
+}
+.go-to-graph:hover{
+    border: 2px #605CB1 solid;
+    color: #605CB1;
+    background-color: #91FD7E;
 }

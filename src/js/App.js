@@ -7,13 +7,15 @@ import '../css/App.css';
 import '../css/tablet.css'
 import '../css/mobile.css'
 
+
 function App() {
+
   return (
         <div className="App">
             <Routes>
                 <Route path="signUp" element={<SignUp />} />
                 <Route path="/" element={<Auth />} />
-                <Route path="graph" element={<GraphPage />} />
+                <Route path="graph" element={<GraphPage/>} />
             </Routes>
         </div>
   );

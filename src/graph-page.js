@@ -5,7 +5,7 @@ import Table from "./table";
 function GraphPage(){
     return(
         <div className={"container"}>
-            <Graph/>
+            <Graph />
             <Table/>
         </div>
     )

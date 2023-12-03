@@ -1,10 +1,8 @@
 
-import React from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 
-
-class Dot{
+export class Dot{
     x = 0
     y = 0
     r = 0
@@ -19,8 +17,12 @@ class Dot{
         this.time = time
     }
 }
+let dots = []
+
 
 function Graph(){
+
+
     return(
         <div>
             <div className={'graph'}>
@@ -76,12 +78,13 @@ function Graph(){
                 </div>
                 <div className={"buttons-block"}>
                     <button onClick={shoot} className={"shoot"} type={"submit"}>SHOOT</button><br/>
-                    <button onClick={clear} className={"clear"} type={"submit"}>Clear Graph</button><br/>
+                    <button onClick={clearDots} className={"clear"} type={"submit"}>Clear Graph</button><br/>
                     <button onClick={del} className={"delete"} type={"submit"}>Delete All</button><br/>
                 </div>
                 <p onClick={start_click_graph} id={"hidden"} ></p>
                 <Link id={"go-to-home-page"} to={"/"}></Link>
             </div>
+            <a className={"go-to-last-dot"} href={"#last-dot"}>Show Last Dot In The Table</a>
         </div>
 
     )
@@ -94,7 +97,7 @@ function logOut(){
     document.getElementById("go-to-home-page").click()
 }
 
-function clear(){
+function clearDots(){
     dots = []
     const canvas = new Canvas()
     canvas.drawGraph(R)
@@ -110,12 +113,11 @@ function del(){
             Authorization: "Bearer " + sessionStorage.getItem("token")
         }
     }).then( function () {
-        clear()
+        clearDots()
         clearTable()
     })
 }
 
-let dots = []
 
 function clearTable(){
     document.getElementById("table").innerHTML = "<div id='x-column' class='column'><div class='head'>X</div></div> <div id='y-column' class='column'><div class='head'>Y</div></div> <div id='r-column' class='column'><div class='head'>R</div></div> <div id='date-column' class='column'><div class='head'>Date</div></div> <div id='result-column' class='column'><div class='head'>Result</div></div>"
@@ -399,6 +401,8 @@ function start_click_graph(){
             const x = (xOffset - 200) / (40)
             const y = (yOffset - 200) * (-1) / (40)
 
+            validY = true
+
             sendDot(x, y, r)
         })
     }
@@ -410,6 +414,7 @@ function sendDot(x, y, r){
 
     socket.send(`${sessionStorage.getItem("id")} dot`)
     if (!block && validY){
+        validY = false
         axios({
             method: 'post',
             url: 'http://localhost:8080/results/check',
@@ -424,13 +429,17 @@ function sendDot(x, y, r){
             }
         }).then( function (response) {
             const time = new Date()
-            dots.push(new Dot(x, y, r, response.data.result, `${time.getHours()}/${time.getMinutes()}/${time.getSeconds()}`))
+
             send = true
+            dots.push(new Dot(x, y, r, response.data.result, `${time.getHours()}/${time.getMinutes()}/${time.getSeconds()}`))
             addInTable(response.data)
             drawOrCat()
         })
     }
 }
+
+
+
 
 function addInTable(dot) {
     const x_column = document.getElementById("x-column")
@@ -445,12 +454,14 @@ function addInTable(dot) {
     } else {
         res = "<br><div class='miss'>MISS</div>"
     }
-
+    if (document.getElementById('last-dot') != null){
+        document.getElementById('last-dot').removeAttribute("id")
+    }
     x_column.innerHTML = x_column.innerHTML + "<br><div class='item'>" + dot.x + "</div>"
     y_column.innerHTML = y_column.innerHTML + "<br><div class='item'>" + dot.y + "</div>"
     r_column.innerHTML = r_column.innerHTML + "<br><div class='item'>" + dot.r + "</div>"
     result_column.innerHTML = result_column.innerHTML + res
-    date_column.innerHTML = date_column.innerHTML + "<br><div class='item'>" + dot.time.slice(11, 19) + "</div>"
+    date_column.innerHTML = date_column.innerHTML + "<br><div id='last-dot' class='item'>" + dot.time.slice(11, 19) + "</div>"
 
 
 }
@@ -504,7 +515,9 @@ function drawOrCat(){
                     Authorization: "Bearer " + sessionStorage.getItem("token")
                 }
             }).then( function (response) {
+
                 for(let i = 0; i < response.data.length; i++){
+
                     dots.push(new Dot(response.data[i].x, response.data[i].y, response.data[i].r, response.data[i].result, response.data[i].time))
                     addInTable(response.data[i])
                 }

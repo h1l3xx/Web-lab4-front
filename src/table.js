@@ -15,11 +15,12 @@ function Table(){
                 <div className={"head"}>R</div>
             </div>
             <div id={"date-column"} className={"column"}>
-                <div className={"head"}>Date</div>
+                <div className={"head"}>Time</div>
             </div>
             <div id={"result-column"} className={"column"}>
                 <div className={"head"}>Result</div>
             </div>
+            <a className={"go-to-graph"} href={"#graph"}>↑</a>
         </div>
 
     )
