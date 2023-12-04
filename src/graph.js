@@ -82,7 +82,7 @@ function Graph(){
                     <button onClick={del} className={"delete"} type={"submit"}>Delete All</button><br/>
                 </div>
                 <p onClick={start_click_graph} id={"hidden"} ></p>
-                <Link id={"go-to-home-page"} to={"/"}></Link>
+                <Link id={"go-to-home-page"} to={"/"}  reloadDocument={true}></Link>
             </div>
             <a className={"go-to-last-dot"} href={"#last-dot"}>Show Last Dot In The Table</a>
         </div>
