@@ -9,12 +9,12 @@ function Auth(){
                 <button id={"register-button"} className={"register-button"} type={'button'}>First Time? Let's Register!</button>
             </Link>
             <div className={'auth-form'}>
+                <p id={"error"}></p>
                 <label className={'label'}>Login</label>
                 <input id={'login'} className={'input'} type={'text'}></input>
                 <label className={'label'}>Password</label>
                 <input id={'password'} className={'input'} type={"password"}></input>
                 <button onClick={auth} id={"submit-button"} className={"submit-button"} type={'submit'}>Submit</button>
-                <p id={"error"}></p>
                 <div className={'forgot'}>
                     <p id={"forgot-text"} >Forgot your password?<br/>↓ Click on this cat! ↓</p>
                     <img onClick={thForClick} className={"cat"} src={require('./image/cats.gif')} alt={""}/>
@@ -38,8 +38,8 @@ function auth(){
 
 
     axios({
-        method: 'post', //you can set what request you want to be
-        url: 'http://localhost:8080/auth',
+        method: 'post',
+        url: 'https://h1l3x.dudosyka.ru/auth',
         data: {
             login : login,
             password : password

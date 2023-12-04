@@ -161,7 +161,7 @@ function getValues(){
 
         axios({
             method: 'post',
-            url: 'http://localhost:8080/auth/register',
+            url: 'https://h1l3x.dudosyka.ru/auth/register',
             data: {
                 name : form.nameValue,
                 surname : form.surnameValue,

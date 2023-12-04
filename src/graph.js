@@ -82,7 +82,7 @@ function Graph(){
                     <button onClick={del} className={"delete"} type={"submit"}>Delete All</button><br/>
                 </div>
                 <p onClick={start_click_graph} id={"hidden"} ></p>
-                <Link id={"go-to-home-page"} to={"/"}></Link>
+                <Link id={"go-to-home-page"} to={"/"} reloadDocument={true}></Link>
             </div>
             <a className={"go-to-last-dot"} href={"#last-dot"}>Show Last Dot In The Table</a>
         </div>
@@ -108,7 +108,7 @@ function del(){
     const id = sessionStorage.getItem("id")
     axios({
         method: 'delete',
-        url: `http://localhost:8080/results/user/${id}`,
+        url: `https://h1l3x.dudosyka.ru/results/user/${id}`,
         headers: {
             Authorization: "Bearer " + sessionStorage.getItem("token")
         }
@@ -417,7 +417,7 @@ function sendDot(x, y, r){
         validY = false
         axios({
             method: 'post',
-            url: 'http://localhost:8080/results/check',
+            url: 'https://h1l3x.dudosyka.ru/results/check',
             data: {
                 x : x,
                 y : y,
@@ -466,7 +466,7 @@ function addInTable(dot) {
 
 }
 function setSocket(){
-    socket = new WebSocket("ws://localhost:8080/ws")
+    socket = new WebSocket("wss://h1l3x.dudosyka.ru/ws")
     socket.onmessage = (event) => {
         console.log(event.data)
     };
@@ -510,7 +510,7 @@ function drawOrCat(){
 
             axios({
                 method: 'get',
-                url: `http://localhost:8080/results/user/${id}`,
+                url: `https://h1l3x.dudosyka.ru/results/user/${id}`,
                 headers: {
                     Authorization: "Bearer " + sessionStorage.getItem("token")
                 }
